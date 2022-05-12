@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:webfeed/domain/dublin_core/dublin_core.dart';
 import 'package:webfeed/domain/itunes/itunes.dart';
 import 'package:webfeed/domain/media/media.dart';
@@ -5,7 +6,6 @@ import 'package:webfeed/domain/rss_category.dart';
 import 'package:webfeed/domain/rss_content.dart';
 import 'package:webfeed/domain/rss_enclosure.dart';
 import 'package:webfeed/domain/rss_source.dart';
-import 'package:webfeed/util/datetime.dart';
 import 'package:webfeed/util/iterable.dart';
 import 'package:xml/xml.dart';
 
@@ -44,6 +44,13 @@ class RssItem {
   });
 
   factory RssItem.parse(XmlElement element) {
+    var dateNotFormatted = element.findElements('pubDate').firstOrNull?.text;
+    String date;
+    if (dateNotFormatted!.length > 10) {
+      date = DateFormat('dd/MM/yyyy HH:mm:ss').format(DateFormat('E, dd LLL yyyy HH:mm:ss Z').parse(dateNotFormatted));
+    } else {
+      date = (DateFormat('dd/MM/yyyy HH:mm:ss').format(DateFormat('dd/MM/yyyy').parse(dateNotFormatted)));
+    }
     return RssItem(
       title: element.findElements('title').firstOrNull?.text,
       description: element.findElements('description').firstOrNull?.text,
@@ -53,7 +60,7 @@ class RssItem {
           .map((e) => RssCategory.parse(e))
           .toList(),
       guid: element.findElements('guid').firstOrNull?.text,
-      pubDate: element.findElements('pubDate').firstOrNull?.text,
+      pubDate: date,
       author: element.findElements('author').firstOrNull?.text,
       comments: element.findElements('comments').firstOrNull?.text,
       source: element
