@@ -16,7 +16,7 @@ class RssItem {
 
   final List<RssCategory>? categories;
   final String? guid;
-  final DateTime? pubDate;
+  final String? pubDate;
   final String? author;
   final String? comments;
   final RssSource? source;
@@ -53,7 +53,7 @@ class RssItem {
           .map((e) => RssCategory.parse(e))
           .toList(),
       guid: element.findElements('guid').firstOrNull?.text,
-      pubDate: parseDateTime(element.findElements('pubDate').firstOrNull?.text),
+      pubDate: element.findElements('pubDate').firstOrNull?.text,
       author: element.findElements('author').firstOrNull?.text,
       comments: element.findElements('comments').firstOrNull?.text,
       source: element
