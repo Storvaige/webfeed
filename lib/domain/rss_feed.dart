@@ -16,6 +16,7 @@ class RssFeed {
   final String? description;
   final String? link;
   final List<RssItem>? items;
+  int lastDisplayedItemIndex = 0;
 
   final RssImage? image;
   final RssCloud? cloud;
@@ -93,27 +94,27 @@ class RssFeed {
           .map((e) => RssCategory.parse(e))
           .toList(),
       skipDays: channelElement
-              .findElements('skipDays')
-              .firstOrNull
-              ?.findAllElements('day')
-              .map((e) => e.text)
-              .toList() ??
+          .findElements('skipDays')
+          .firstOrNull
+          ?.findAllElements('day')
+          .map((e) => e.text)
+          .toList() ??
           [],
       skipHours: channelElement
-              .findElements('skipHours')
-              .firstOrNull
-              ?.findAllElements('hour')
-              .map((e) => int.tryParse(e.text) ?? 0)
-              .toList() ??
+          .findElements('skipHours')
+          .firstOrNull
+          ?.findAllElements('hour')
+          .map((e) => int.tryParse(e.text) ?? 0)
+          .toList() ??
           [],
       lastBuildDate:
-          channelElement.findElements('lastBuildDate').firstOrNull?.text,
+      channelElement.findElements('lastBuildDate').firstOrNull?.text,
       language: channelElement.findElements('language').firstOrNull?.text,
       generator: channelElement.findElements('generator').firstOrNull?.text,
       copyright: channelElement.findElements('copyright').firstOrNull?.text,
       docs: channelElement.findElements('docs').firstOrNull?.text,
       managingEditor:
-          channelElement.findElements('managingEditor').firstOrNull?.text,
+      channelElement.findElements('managingEditor').firstOrNull?.text,
       rating: channelElement.findElements('rating').firstOrNull?.text,
       webMaster: channelElement.findElements('webMaster').firstOrNull?.text,
       ttl: int.tryParse(
