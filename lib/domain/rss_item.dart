@@ -47,9 +47,17 @@ class RssItem {
     var dateNotFormatted = element.findElements('pubDate').firstOrNull?.text;
     String date;
     if (dateNotFormatted!.length > 10) {
-      date = DateFormat('dd/MM/yyyy HH:mm:ss').format(DateFormat('E, dd LLL yyyy HH:mm:ss Z').parse(dateNotFormatted));
+      date = DateFormat('dd/MM/yyyy HH:mm:ss').format(
+          Intl.withLocale('en', () => DateFormat(
+              'E, dd LLL yyyy HH:mm:ss Z'
+          ).parse(dateNotFormatted))
+      );
     } else {
-      date = (DateFormat('dd/MM/yyyy HH:mm:ss').format(DateFormat('dd/MM/yyyy').parse(dateNotFormatted)));
+      date = DateFormat('dd/MM/yyyy HH:mm:ss').format(
+          Intl.withLocale('en', () => DateFormat(
+              'dd/MM/yyyy'
+          ).parse(dateNotFormatted))
+      );
     }
     return RssItem(
       title: element.findElements('title').firstOrNull?.text,
